@@ -14,7 +14,7 @@ description: "Integrate your TuYa TS0215A_remote via Zigbee2MQTT with whatever s
 | Description | Security remote control |
 | Exposes | battery, action, linkquality |
 | Picture | ![TuYa TS0215A_remote](../images/devices/TS0215A_remote.jpg) |
-| White-label | Woox R7054 |
+| White-label | Woox R7054, Nedis ZBRC10WT |
 
 ## Notes
 

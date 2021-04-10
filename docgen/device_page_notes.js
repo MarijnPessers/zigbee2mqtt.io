@@ -200,8 +200,8 @@ to enter pairing mode. The LED will blink blue and the device will join the netw
     {
         model: ['HLU2909K'],
         note: `
-### Power cut
-ZigBee 3.0, cuts power if too high temperature monitoring and if overloaded.
+### Protection
+ZigBee 3.0, monitoring and cuts power if too high temperature or if overloaded.
 
 ### Pairing
 Factory reset by press & hold the power button for 12 seconds. The LED is then starting to blink 3 times RED in intervals during pairing process.
@@ -212,6 +212,29 @@ Factory reset by press & hold the power button for 12 seconds. The LED is then s
 
 ### Manual
 [Supplier's manual](http://www.nonline.no/wp-content/uploads/2020/03/Apex_Smart_Plug_UserManual.pdf)
+`,
+    },
+    {
+        model: ['HSE2905E'],
+        note: `
+### Pairing
+Factory reset by removing the plastic cover and press & hold the power button for 10 seconds. The LED is then
+starting to blink Red/Blue to indicate in pairing mode.
+
+### Should automatically support (only tested Kamstrup)
+- Aidon
+- Kaifa
+- Kamstrup
+
+### Configuring interface mode
+There should be no need to configure into any interface mode as the Eva HAN should autodetect the correct mode.
+
+### Not getting measurements
+In case you are not getting any measurements, it could be that your firmware is too old. If firmware are < 0.4
+either update fw via Eva Smart HUB or ask Datek for a replacement with min fw 0.4. Tested on 0.4.
+
+### Where do I find this product
+[Product page](https://shop.evasmart.no/produkt/smarthus/maleravleser#product-tabs1)
 `,
     },
     {
@@ -1223,6 +1246,26 @@ When you let go of the button an LED should blink.
 After resetting the 3 gang switch will automatically connect.
 
 While pairing, keep the 3 gang switch close to the adapter.
+
+### Node-Red
+How to use the connector strip with Node-Red: Use the "command node" of the node-red-contrib-zigbee-package. Drop-down-lists are helping you with the configuration.
+`,
+    },
+    {
+        model: 'BAC-002-ALZB',
+        note: `
+### Pairing
+Switch the thermostat off. Press and hold the temperature down button for +- 8 seconds to enable the pairing mode (display lights up and a WiFi-like icon is blinking). After successful interview turn the thermostat on again.
+
+### Stop message flooding
+This unit has a bug that makes it send multiple messages when updating. To stop this from flooding your MQTT Queues, please add the following to your \`configuration.yaml\` file:
+
+{% raw %}
+devices:
+  '0x12345678':
+    friendly_name: thermostat
+    debounce: 1
+{% endraw %}
 `,
     },
     {
@@ -1561,22 +1604,28 @@ Note: if \`hue_power_on_behavior\` is set to \`off\`, then the only way to turn 
         note: `
 ### Set default power on/off transition
 Various Osram/Sylvania LED support setting a default transition when turning a light on and off.
+
+**TOPIC**: \`zigbee2mqtt/FRIENDLY_NAME/set\`
 \`\`\`js
 {
-    "set_transition": 0.1,            //time in seconds (integer or float)
+    "set_transition": 1
 }
 \`\`\`
+**INFO**: Value is time in seconds (integer, float values are not supported)
 
 ### Remember current light state
 Various Osram/Sylvania LED support remembering their current state in case of power loss, or if a light
 is manually switched off then on. Lights will remember their respective attributes
 (i.e. brightness, color, saturation, etc.).
-NOTE: This must be executed every time you make changes to a light's attributes for it to then 'remember' it.
+**NOTE**: This must be executed every time you make changes to a light's attributes for it to then 'remember' it.
+
+**TOPIC**: \`zigbee2mqtt/FRIENDLY_NAME/set\`
 \`\`\`js
 {
-    "remember_state": true,            // true, false (boolean)
+    "remember_state": true
 }
 \`\`\`
+**INFO**: Value is true, false (boolean)
 `,
     },
     {
@@ -2107,6 +2156,14 @@ By publishing to \`zigbee2mqtt/FRIENDLY_NAME/set\` various device attributes can
 ### Pairing
 Press and hold the reset button on the device for +- 5 seconds (until the green light starts blinking).
 After this the device will automatically join.
+`,
+    },
+    {
+        model: ['4257050-RZHAC'],
+        note: `
+### Pairing
+
+To pair the outlet, you need to hold the button as you plug it in. Release the button as soon as the LED light illuminates.
 `,
     },
     {
@@ -3219,15 +3276,15 @@ for example:
 '0x001fee0000001234':
     friendly_name: cover_not_supporting_tilt'
     homeassistant:
-    tilt_command_topic: null
-    tilt_status_topic: null
+      tilt_command_topic: null
+      tilt_status_topic: null
 '0x001fee0000001234':
     friendly_name: cover_supporting_neither_lift_nor_tilt'
     homeassistant:
     set_position_topic: null
     position_topic: null
-    tilt_command_topic: null
-    tilt_status_topic: null
+      tilt_command_topic: null
+      tilt_status_topic: null
 \`\`\`
 `,
     },
@@ -3466,11 +3523,11 @@ After installing the TRV twist the cap in the **-** direction and hold for
 2 seconds until the blue LED lights up.
 
 ### Device hard reset
-If the device fails to pair/join the network (\`red:yellow:blue\` on paring mode) or you changed the network id/channel, connect to another network, bought the TRV second hand, you can perform a factory reset to start fresh.
+If the device fails to pair/join the network (\`red:yellow:blue\` on pairing mode) or you changed the network id/channel, connect to another network, bought the TRV second hand, you can perform a factory reset to start fresh.
 
 1. Make sure that the TRV is NOT in pairing mode.
 2. Twist the cap in the **-** direction and hold till blue light turns off and then center light blinks red (about 15 seconds).
-3. Release the button, you should see a \`red:gree:blue\` short flash; the valve will go into installation mode.
+3. Release the button, you should see a \`red:green:blue\` short flash; the valve will go into installation mode.
 
 ### Controlling
 
